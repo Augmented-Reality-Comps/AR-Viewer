@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6185.7" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6181.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -13,61 +13,74 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LIY-1B-TMz">
-                                <rect key="frame" x="0.0" y="436" width="480" height="44"/>
+                            <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8m-Ax-bGB">
+                                <rect key="frame" x="0.0" y="429" width="337" height="44"/>
                                 <items>
-                                    <barButtonItem systemItem="stop" id="bFL-xo-NTS">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="eXN-8H-Wfa"/>
+                                    <barButtonItem title="&lt;" id="fmz-aK-Y2z">
                                         <connections>
-                                            <action selector="stop:" destination="vXZ-lx-hvc" id="8Wl-bc-yGe"/>
+                                            <action selector="goLeft" destination="vXZ-lx-hvc" id="nUY-4o-I6P"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="2fh-9w-650"/>
-                                    <barButtonItem systemItem="refresh" id="LTV-zo-C0l">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="4o1-eF-eu8"/>
+                                    <barButtonItem title="V" width="16" id="ei9-ot-u6h">
                                         <connections>
-                                            <action selector="doRefresh:" destination="vXZ-lx-hvc" id="ySO-Fq-EY3"/>
+                                            <action selector="goBackward" destination="vXZ-lx-hvc" id="FZr-cw-mR2"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="BBa-Us-6jb"/>
-                                    <barButtonItem systemItem="rewind" id="34A-b5-nc3">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="h8K-QA-zn8"/>
+                                    <barButtonItem title="\" id="gVW-tf-FmL"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="QgM-vc-uMz"/>
+                                    <barButtonItem title="/" id="2Pj-as-XOw"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="1lp-Td-vK2"/>
+                                    <barButtonItem title="^" id="dvy-0f-dz3">
                                         <connections>
-                                            <action selector="goBack:" destination="vXZ-lx-hvc" id="Gfg-AU-Lmt"/>
+                                            <action selector="goForward" destination="vXZ-lx-hvc" id="ZbQ-qc-Yup"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="eWg-1s-h5N"/>
-                                    <barButtonItem systemItem="fastForward" id="BrD-hT-zHl">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Xh8-FI-M1I"/>
+                                    <barButtonItem title=">" id="JUY-7e-Xsg">
                                         <connections>
-                                            <action selector="goForward:" destination="vXZ-lx-hvc" id="eMK-tG-h4d"/>
+                                            <action selector="goRight" destination="vXZ-lx-hvc" id="Ih1-RZ-IZN"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZND-0O-EiC"/>
                                 </items>
+                                <variation key="heightClass=regular" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="579" width="600" height="44"/>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="756" width="400" height="44"/>
+                                </variation>
                             </toolbar>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="igD-RW-O2X">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="436"/>
+                            <webView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="igD-RW-O2X">
+                                <rect key="frame" x="0.0" y="117" width="600" height="241"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="heightClass=regular" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="72" width="600" height="333"/>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="756"/>
+                                </variation>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="LIY-1B-TMz" secondAttribute="bottom" id="2c7-JX-a08"/>
-                            <constraint firstItem="igD-RW-O2X" firstAttribute="bottom" secondItem="LIY-1B-TMz" secondAttribute="top" id="FBs-CH-Jjo"/>
                             <constraint firstItem="igD-RW-O2X" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="Gch-eG-1hG"/>
-                            <constraint firstItem="igD-RW-O2X" firstAttribute="trailing" secondItem="LIY-1B-TMz" secondAttribute="trailing" id="Jin-m4-HH2"/>
-                            <constraint firstItem="igD-RW-O2X" firstAttribute="leading" secondItem="LIY-1B-TMz" secondAttribute="leading" id="QUd-SS-Bfa"/>
-                            <constraint firstAttribute="trailing" secondItem="LIY-1B-TMz" secondAttribute="trailing" id="ikb-Lr-XaN"/>
-                            <constraint firstItem="LIY-1B-TMz" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="rlg-sT-Fou"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="webView" destination="igD-RW-O2X" id="ozk-Oi-fJ8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="139.5" y="132"/>
         </scene>
     </scenes>
 </document>

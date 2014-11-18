@@ -57,7 +57,7 @@
 		48045340196BD02000EBD3A6 = {
 			isa = PBXGroup;
 			children = (
-				4804534B196BD02000EBD3A6 /* WebViewDemo */,
+				4804534B196BD02000EBD3A6 /* stuff */,
 				4804535E196BD02000EBD3A6 /* WebViewDemoTests */,
 				4804534A196BD02000EBD3A6 /* Products */,
 			);
@@ -72,7 +72,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4804534B196BD02000EBD3A6 /* WebViewDemo */ = {
+		4804534B196BD02000EBD3A6 /* stuff */ = {
 			isa = PBXGroup;
 			children = (
 				4804534E196BD02000EBD3A6 /* AppDelegate.swift */,
@@ -81,6 +81,7 @@
 				48045355196BD02000EBD3A6 /* Images.xcassets */,
 				4804534C196BD02000EBD3A6 /* Supporting Files */,
 			);
+			name = stuff;
 			path = WebViewDemo;
 			sourceTree = "<group>";
 		};
@@ -158,6 +159,7 @@
 				TargetAttributes = {
 					48045348196BD02000EBD3A6 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = F32NER3Q9Y;
 					};
 					4804535A196BD02000EBD3A6 = {
 						CreatedOnToolsVersion = 6.0;
@@ -165,7 +167,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "WebViewDemo" */;
+			buildConfigurationList = 48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "stuff" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -325,6 +327,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = WebViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -336,6 +339,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = WebViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -379,7 +383,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "WebViewDemo" */ = {
+		48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "stuff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				48045363196BD02000EBD3A6 /* Debug */,
@@ -395,6 +399,7 @@
 				48045367196BD02000EBD3A6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		48045368196BD02000EBD3A6 /* Build configuration list for PBXNativeTarget "WebViewDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -403,6 +408,7 @@
 				4804536A196BD02000EBD3A6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

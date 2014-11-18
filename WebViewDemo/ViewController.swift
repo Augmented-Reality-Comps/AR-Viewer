@@ -4,48 +4,71 @@
 //
 
 import UIKit
+import CoreLocation
+import CoreMotion
 
-class ViewController: UIViewController  {
+class ViewController: UIViewController, CLLocationManagerDelegate  {
     
     @IBOutlet var webView: UIWebView!
-                            
+    let locationManager = CLLocationManager()
+    let motionManager = CMMotionManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let url = NSURL(string: "http://localhost/~comps/http/http_test2.py?lat=1&long=1&alt=1&dis=10")
-        let request = NSURLRequest(URL: url)
-        webView.loadRequest(request)
-    }
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+        self.motionManager.deviceMotionUpdateInterval = 0.001
+        self.motionManager.startDeviceMotionUpdates()
 
+        var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/demo/demo.py"
+        loc += "?"
+
+        loc = loc + "lat=" + String(format: "%f", self.locationManager.location.coordinate.latitude)
+        loc = loc + "&long=" + String(format: "%f", self.locationManager.location.coordinate.longitude)
+        loc = loc + "&alt=" + String(format: "%f", self.locationManager.location.altitude)
+        println(loc)
+        let url = NSURL(string: loc)
+        let request = NSURLRequest(URL: url!)
+        webView.loadRequest(request)
+
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func doRefresh(AnyObject) {
-        webView.reload()
+    @IBAction func goLeft() {
+        println("LEFT")
+        webView.stringByEvaluatingJavaScriptFromString("goLeft(.1)")
     }
     
-    @IBAction func goBack(AnyObject) {
-        webView.stringByEvaluatingJavaScriptFromString("backward(10)")
-//        webView.goBack()
+    @IBAction func goRight() {
+        println("RIGHT")
+        webView.stringByEvaluatingJavaScriptFromString("goRight(.1)")
     }
     
-    @IBAction func goForward(AnyObject) {
-        webView.stringByEvaluatingJavaScriptFromString("forward(10)")
-//        webView.goForward()
+    @IBAction func goForward() {
+        println("FORWARD")
+        webView.stringByEvaluatingJavaScriptFromString("changeY(.1)")
     }
     
-    @IBAction func stop(AnyObject) {
-        for i in 1...20 {
-            webView.stringByEvaluatingJavaScriptFromString("forward(5)")
-            usleep(1000)
-        }
-//        for i in 1...20 {
-//            webView.stringByEvaluatingJavaScriptFromString("backward(5)")
-//        }
-        
-//        webView.stopLoading()
+    @IBAction func goBackward() {
+        println("BACKWARD")
+        webView.stringByEvaluatingJavaScriptFromString("changeY(.-1)")
     }
+    
+//    @IBAction func angleRight(AnyObject) {
+//        webView.stringByEvaluatingJavaScriptFromString("angleRight(10)")
+//    }
+//    
+//    @IBAction func angleLeft(AnyObject) {
+//        webView.stringByEvaluatingJavaScriptFromString("angleLeft(10)")
+//    }
+    
+    //490 078
 
 }
 
