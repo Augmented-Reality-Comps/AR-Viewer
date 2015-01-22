@@ -22,12 +22,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.motionManager.deviceMotionUpdateInterval = 0.001
         self.motionManager.startDeviceMotionUpdates()
 
-        var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/demo/demo.py"
-        loc += "?"
-
+        var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
+        
         loc = loc + "lat=" + String(format: "%f", self.locationManager.location.coordinate.latitude)
         loc = loc + "&long=" + String(format: "%f", self.locationManager.location.coordinate.longitude)
         loc = loc + "&alt=" + String(format: "%f", self.locationManager.location.altitude)
+        
+        if let attitude = motionManager.deviceMotion?.attitude? {
+            loc += String(format: "%i", Int(motionManager.deviceMotion.attitude.pitch))
+            loc += String(format: "%i", Int(motionManager.deviceMotion.attitude.roll))
+            loc += String(format: "%i", Int(motionManager.deviceMotion.attitude.yaw))
+        }
+
         println(loc)
         let url = NSURL(string: loc)
         let request = NSURLRequest(URL: url!)
@@ -35,8 +41,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
 
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func didReceiveMemoryWarning() {         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
