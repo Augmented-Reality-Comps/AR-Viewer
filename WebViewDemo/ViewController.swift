@@ -9,6 +9,10 @@ import CoreMotion
 
 class ViewController: UIViewController, CLLocationManagerDelegate  {
     
+    
+    @IBOutlet weak var pitchLabel: UILabel!
+    @IBOutlet weak var rollLabel: UILabel!
+    @IBOutlet weak var yawLabel: UILabel!
     @IBOutlet var webView: UIWebView!
     let locationManager = CLLocationManager()
     let motionManager = CMMotionManager()
@@ -21,24 +25,63 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.startUpdatingLocation()
         self.motionManager.deviceMotionUpdateInterval = 0.001
         self.motionManager.startDeviceMotionUpdates()
-
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        self.getMotionData(manager.location)
+    }
+    
+    func getMotionData(location: CLLocation){
         var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
         
-        loc = loc + "lat=" + String(format: "%f", self.locationManager.location.coordinate.latitude)
-        loc = loc + "&long=" + String(format: "%f", self.locationManager.location.coordinate.longitude)
-        loc = loc + "&alt=" + String(format: "%f", self.locationManager.location.altitude)
+        //Latitude and longitude specifically for at the desk
+        var latitude = String(format: "%f", location.coordinate.latitude-44.462582)
+        var longitude = String(format: "%f", location.coordinate.longitude+93.153518)
+        var altitude = String(format: "%f", location.altitude - 286.05 + 1)
+        
+        /* //Actual latitude, longitude, and altitude values
+        loc = loc + "lattitude=" + String(format: "%f", self.locationManager.location.coordinate.latitude)
+        loc = loc + "&longitude=" + String(format: "%f", self.locationManager.location.coordinate.longitude)
+        loc = loc + "&altitude=" + String(format: "%f", self.locationManager.location.altitude)
+        loc += "latitude=" + latitude + "&longitude=" + longitude + "&altitude=" + altitude
+        */
+        
+        //Testing latitude, longitude, altitude URL
+        loc += "latitude=0&longitude=0&altitude=10"
+
         
         if let attitude = motionManager.deviceMotion?.attitude? {
-            loc += String(format: "%i", Int(motionManager.deviceMotion.attitude.pitch))
-            loc += String(format: "%i", Int(motionManager.deviceMotion.attitude.roll))
-            loc += String(format: "%i", Int(motionManager.deviceMotion.attitude.yaw))
+            
+            //Attitude DIVIDED BY 10 FOR VAGUE SCALING 
+            //NEEDS BETTER SCALING MECHANISM
+            var pitch = String(format: "%f", Float(motionManager.deviceMotion.attitude.pitch)/10)
+            var roll = String(format: "%f", Float(motionManager.deviceMotion.attitude.roll)/10)
+            var yaw = String(format: "%f", Float(motionManager.deviceMotion.attitude.yaw)/10)
+            
+            //Testing Euler URl
+            //loc += "&pitch=0&roll=0&yaw=0"
+            
+         //Accurate Euler angles
+            loc += "&pitch=" + pitch
+            loc += "&roll=" + roll
+            loc += "&yaw=" + yaw
+            
+           /* //Labels for testing
+            
+            pitchLabel.text = "Pitch: " + pitch
+            rollLabel.text = "Roll: " + roll
+            yawLabel.text = "Yaw: " + yaw
+            */
+            formatURL(loc)
         }
-
+        
         println(loc)
+    }
+    
+    func formatURL(loc: String){
         let url = NSURL(string: loc)
         let request = NSURLRequest(URL: url!)
         webView.loadRequest(request)
-
     }
     
     override func didReceiveMemoryWarning() {         super.didReceiveMemoryWarning()
@@ -73,7 +116,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
 //        webView.stringByEvaluatingJavaScriptFromString("angleLeft(10)")
 //    }
     
-    //490 078
 
 }
 
