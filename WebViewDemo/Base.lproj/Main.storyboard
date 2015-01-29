@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -13,7 +13,7 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8m-Ax-bGB">
@@ -56,8 +56,8 @@
                                     <rect key="frame" x="0.0" y="756" width="400" height="44"/>
                                 </variation>
                             </toolbar>
-                            <webView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="igD-RW-O2X">
-                                <rect key="frame" x="0.0" y="-11" width="600" height="611"/>
+                            <webView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="igD-RW-O2X">
+                                <rect key="frame" x="0.0" y="-11" width="780" height="1054"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <variation key="heightClass=regular" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="0.0" y="72" width="600" height="333"/>
@@ -66,20 +66,20 @@
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="756"/>
                                 </variation>
                             </webView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7i-aU-I5n">
+                                <rect key="frame" x="5" y="80" width="600" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t62-WD-RbD">
                                 <rect key="frame" x="5" y="109" width="600" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TVG-GO-SKz">
-                                <rect key="frame" x="5" y="143" width="600" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7i-aU-I5n">
-                                <rect key="frame" x="5" y="80" width="600" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TLK-Pf-P6H">
+                                <rect key="frame" x="5" y="138" width="600" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -91,12 +91,12 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
-                        <outlet property="pitchLabel" destination="L7i-aU-I5n" id="MJn-1f-XkN"/>
-                        <outlet property="rollLabel" destination="t62-WD-RbD" id="Sy9-bu-Dgb"/>
+                        <outlet property="altitudeLabel" destination="TLK-Pf-P6H" id="6yO-Sq-04u"/>
+                        <outlet property="latitudeLabel" destination="L7i-aU-I5n" id="Ka5-72-vkR"/>
+                        <outlet property="longitudeLabel" destination="t62-WD-RbD" id="BTr-bo-oNb"/>
                         <outlet property="webView" destination="igD-RW-O2X" id="ozk-Oi-fJ8"/>
-                        <outlet property="yawLabel" destination="TVG-GO-SKz" id="DPB-Li-5p2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
