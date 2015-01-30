@@ -17,6 +17,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
+    @IBOutlet weak var angleLabel: UILabel!
+    
     @IBOutlet var webView: UIWebView!
     let locationManager = CLLocationManager()
     let motionManager = CMMotionManager()
@@ -89,6 +91,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.view.bringSubviewToFront(latitudeLabel)
         self.view.bringSubviewToFront(longitudeLabel)
         self.view.bringSubviewToFront(altitudeLabel)
+        self.view.bringSubviewToFront(angleLabel)
         captureSession.startRunning()
     }
     
@@ -101,22 +104,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
         var latitude = String(format: "%f", location.coordinate.latitude * 100000)
         var longitude = String(format: "%f", location.coordinate.longitude * 100000)
-        var altitude = String(format: "%f", location.altitude + 20)
+        var altitude = String(format: "%f", location.altitude)
         
-        /*
-         //Actual latitude, longitude, and altitude values
-        loc = loc + "latitude=" + String(format: "%f", self.locationManager.location.coordinate.latitude)
-        loc = loc + "&longitude=" + String(format: "%f", self.locationManager.location.coordinate.longitude)
-        loc = loc + "&altitude=0"
-        */
-        
-        loc += "latitude=" + latitude + "&longitude=" + longitude  //"&altitude=" + altitude
-        loc += "&altitude=" + String(20)
+        loc += "latitude=" + latitude + "&longitude=" + longitude + "&altitude=" + altitude
+        //loc += "&altitude=" + String(20)
 
         if let attitude = motionManager.deviceMotion?.attitude? {
-            
-            //Attitude DIVIDED BY 10 FOR VAGUE SCALING 
-            //NEEDS BETTER SCALING MECHANISM
             var pitch = String(format: "%f", Float(motionManager.deviceMotion.attitude.pitch))
             var roll = String(format: "%f", Float(motionManager.deviceMotion.attitude.roll))
             var yaw = String(format: "%f", Float(motionManager.deviceMotion.attitude.yaw))
@@ -129,21 +122,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             loc += "&roll=" + roll
             loc += "&yaw=" + yaw
 
-            //Labels for testing
+            //Labels
             latitudeLabel.text = "Latitude:" + latitude
             longitudeLabel.text = "Longitude: " + longitude
             altitudeLabel.text = "Altitude: " + altitude
+            angleLabel.text = "Pitch: "+pitch+"\nRoll: "+roll+"\nYaw: "+yaw
             
             formatURL(loc)
         }
-        
-        print(longitude)
-        print(" ")
-        print(latitude)
-        print(" ")
-        println(altitude)
         println(loc)
-        
     }
     
     func formatURL(loc: String){
@@ -155,35 +142,5 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     override func didReceiveMemoryWarning() {         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func goLeft() {
-        println("LEFT")
-        webView.stringByEvaluatingJavaScriptFromString("goLeft(.1)")
-    }
-    
-    @IBAction func goRight() {
-        println("RIGHT")
-        webView.stringByEvaluatingJavaScriptFromString("goRight(.1)")
-    }
-    
-    @IBAction func goForward() {
-        println("FORWARD")
-        webView.stringByEvaluatingJavaScriptFromString("changeY(.1)")
-    }
-    
-    @IBAction func goBackward() {
-        println("BACKWARD")
-        webView.stringByEvaluatingJavaScriptFromString("changeY(.-1)")
-    }
-    
-//    @IBAction func angleRight(AnyObject) {
-//        webView.stringByEvaluatingJavaScriptFromString("angleRight(10)")
-//    }
-//    
-//    @IBAction func angleLeft(AnyObject) {
-//        webView.stringByEvaluatingJavaScriptFromString("angleLeft(10)")
-//    }
-    
-
 }
 
