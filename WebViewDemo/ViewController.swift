@@ -13,11 +13,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
+    var refresh = true
 
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var angleLabel: UILabel!
+    
+    var devicePosition: DevicePosition!
     
     @IBOutlet var webView: UIWebView!
     let locationManager = CLLocationManager()
@@ -26,6 +29,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         initManagers()
+        
+        devicePosition = DevicePosition()
         
         webView.opaque = false
         webView.backgroundColor = UIColor.clearColor()
@@ -45,6 +50,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
                     }
                 }
             }
+        }
+        
+        if refresh {
+            if let attitude = motionManager.deviceMotion?.attitude? {
+                initPage()
+            }
+            refresh = false
         }
 
     }
@@ -97,40 +109,45 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         self.getMotionData(manager.location)
+        initPage()
+    }
+    
+    func initPage() {
+        var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
+        //getMotionData(location)
+        if devicePosition.initialized {
+        loc += "latitude=" + devicePosition.getStringValues().latitude + "&longitude=" + devicePosition.getStringValues().longitude + "&altitude=" + devicePosition.getStringValues().altitude
+        
+        if let attitude = motionManager.deviceMotion?.attitude? {
+            //Accurate Euler angles
+            println("before attitude")
+            loc += "&pitch=" + devicePosition.getStringValues().pitch
+            loc += "&roll=" + devicePosition.getStringValues().roll
+            loc += "&yaw=" + devicePosition.getStringValues().yaw
+            println("after attitude")
+            }
+        formatURL(loc)
+        println(loc)
+        }
     }
     
     func getMotionData(location: CLLocation){
-        var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
+        devicePosition.setLatitude(Float(location.coordinate.latitude * 100000))
+        devicePosition.setLongitude(Float(location.coordinate.longitude * 100000))
+        devicePosition.setAltitude(Float(location.altitude))
         
-        var latitude = String(format: "%f", location.coordinate.latitude * 100000)
-        var longitude = String(format: "%f", location.coordinate.longitude * 100000)
-        var altitude = String(format: "%f", location.altitude)
-        
-        loc += "latitude=" + latitude + "&longitude=" + longitude + "&altitude=" + altitude
-        //loc += "&altitude=" + String(20)
-
         if let attitude = motionManager.deviceMotion?.attitude? {
-            var pitch = String(format: "%f", Float(motionManager.deviceMotion.attitude.pitch))
-            var roll = String(format: "%f", Float(motionManager.deviceMotion.attitude.roll))
-            var yaw = String(format: "%f", Float(motionManager.deviceMotion.attitude.yaw))
+            devicePosition.setPitch(Float(motionManager.deviceMotion.attitude.pitch))
+            devicePosition.setRoll(Float(motionManager.deviceMotion.attitude.roll))
+            devicePosition.setYaw(Float(motionManager.deviceMotion.attitude.yaw))
             
-        //Testing Euler URl
-            //loc += "&pitch=0&roll=0&yaw=0"
-            
-         //Accurate Euler angles
-            loc += "&pitch=" + pitch
-            loc += "&roll=" + roll
-            loc += "&yaw=" + yaw
 
             //Labels
-            latitudeLabel.text = "Latitude:" + latitude
-            longitudeLabel.text = "Longitude: " + longitude
-            altitudeLabel.text = "Altitude: " + altitude
-            angleLabel.text = "Pitch: "+pitch+"\nRoll: "+roll+"\nYaw: "+yaw
-            
-            formatURL(loc)
+            latitudeLabel.text = "Latitude: "+devicePosition.getStringValues().latitude
+            longitudeLabel.text = "Longitude: "+devicePosition.getStringValues().longitude
+            altitudeLabel.text = "Altitude: "+devicePosition.getStringValues().altitude
+            angleLabel.text = "Pitch: "+devicePosition.getStringValues().pitch+"\nRoll: "+devicePosition.getStringValues().roll+"\nYaw: "+devicePosition.getStringValues().yaw
         }
-        println(loc)
     }
     
     func formatURL(loc: String){

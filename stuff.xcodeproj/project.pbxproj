@@ -12,6 +12,7 @@
 		48045354196BD02000EBD3A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48045352196BD02000EBD3A6 /* Main.storyboard */; };
 		48045356196BD02000EBD3A6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48045355196BD02000EBD3A6 /* Images.xcassets */; };
 		48045362196BD02000EBD3A6 /* WebViewDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48045361196BD02000EBD3A6 /* WebViewDemoTests.swift */; };
+		55F437E21A85662A00573725 /* DevicePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F437E11A85662A00573725 /* DevicePosition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		4804535B196BD02000EBD3A6 /* WebViewDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebViewDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48045360196BD02000EBD3A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48045361196BD02000EBD3A6 /* WebViewDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewDemoTests.swift; sourceTree = "<group>"; };
+		55F437E11A85662A00573725 /* DevicePosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicePosition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 			children = (
 				4804534E196BD02000EBD3A6 /* AppDelegate.swift */,
 				48045350196BD02000EBD3A6 /* ViewController.swift */,
+				55F437E11A85662A00573725 /* DevicePosition.swift */,
 				48045352196BD02000EBD3A6 /* Main.storyboard */,
 				48045355196BD02000EBD3A6 /* Images.xcassets */,
 				4804534C196BD02000EBD3A6 /* Supporting Files */,
@@ -210,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F437E21A85662A00573725 /* DevicePosition.swift in Sources */,
 				48045351196BD02000EBD3A6 /* ViewController.swift in Sources */,
 				4804534F196BD02000EBD3A6 /* AppDelegate.swift in Sources */,
 			);
