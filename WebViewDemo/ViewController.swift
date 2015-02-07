@@ -45,20 +45,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
                 if(device.position == AVCaptureDevicePosition.Back) {
                     captureDevice = device as? AVCaptureDevice
                     if captureDevice != nil {
-                        println("Capture device found")
                         beginSession()
                     }
                 }
             }
         }
-        
-        if refresh {
-            if let attitude = motionManager.deviceMotion?.attitude? {
-                initPage()
-            }
-            refresh = false
-        }
-
     }
     
     func initManagers() {
@@ -66,7 +57,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-        self.motionManager.deviceMotionUpdateInterval = 0.001
+        self.motionManager.deviceMotionUpdateInterval = 0.01
         self.motionManager.startDeviceMotionUpdates()
     }
     
@@ -107,41 +98,52 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         captureSession.startRunning()
     }
     
+    // Updates on CLLocationManager detect change
+    // Checks if the device is currently receiving its position
+    // Constructs a string corresponding to a javascript call to updateScene()
+    // Executes the javascript call in the webview
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         self.getMotionData(manager.location)
-        initPage()
-    }
-    
-    func initPage() {
-        var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
-        //getMotionData(location)
-        if devicePosition.initialized {
-        loc += "latitude=" + devicePosition.getStringValues().latitude + "&longitude=" + devicePosition.getStringValues().longitude + "&altitude=" + devicePosition.getStringValues().altitude
-        
-        if let attitude = motionManager.deviceMotion?.attitude? {
-            //Accurate Euler angles
-            println("before attitude")
-            loc += "&pitch=" + devicePosition.getStringValues().pitch
-            loc += "&roll=" + devicePosition.getStringValues().roll
-            loc += "&yaw=" + devicePosition.getStringValues().yaw
-            println("after attitude")
-            }
-        formatURL(loc)
-        println(loc)
+        if refresh {
+            initPage()
+        }
+        if devicePosition.hasPosition {
+            var toRun = "updateScene("
+            toRun += devicePosition.getStringValues().latitude
+            toRun += ", " + devicePosition.getStringValues().longitude
+            toRun += ", " + devicePosition.getStringValues().altitude
+            toRun += ", " + devicePosition.getStringValues().pitch
+            toRun += ", " + devicePosition.getStringValues().roll
+            toRun += ", " + devicePosition.getStringValues().yaw
+            toRun += ")"
+            webView.stringByEvaluatingJavaScriptFromString(toRun)
         }
     }
     
+    
+    // Checks if the device has position information and
+    // fetches the html, js, and dae from the server
+    // Doesn't need attitude data
+    func initPage() {
+        if (devicePosition.hasPosition) {
+            var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
+            loc += "latitude=" + devicePosition.getStringValues().latitude
+            loc += "&longitude=" + devicePosition.getStringValues().longitude
+            loc += "&altitude=" + devicePosition.getStringValues().altitude
+            loc += "&pitch=0&roll=0&yaw=0"
+            println(loc)
+            formatURL(loc)
+            refresh = false
+        }
+    }
+    
+    // Updates the devicePosition object with current values of lat, long, alt, pitch, roll, and yaw
     func getMotionData(location: CLLocation){
-        devicePosition.setLatitude(Float(location.coordinate.latitude * 100000))
-        devicePosition.setLongitude(Float(location.coordinate.longitude * 100000))
-        devicePosition.setAltitude(Float(location.altitude))
+        devicePosition.setPosition(Float(location.coordinate.latitude * 100000), longitude: Float(location.coordinate.longitude * 100000), altitude: Float(location.altitude))
         
         if let attitude = motionManager.deviceMotion?.attitude? {
-            devicePosition.setPitch(Float(motionManager.deviceMotion.attitude.pitch))
-            devicePosition.setRoll(Float(motionManager.deviceMotion.attitude.roll))
-            devicePosition.setYaw(Float(motionManager.deviceMotion.attitude.yaw))
+            devicePosition.setAngle(Float(motionManager.deviceMotion.attitude.pitch), roll: Float(motionManager.deviceMotion.attitude.roll), yaw: Float(motionManager.deviceMotion.attitude.yaw))
             
-
             //Labels
             latitudeLabel.text = "Latitude: "+devicePosition.getStringValues().latitude
             longitudeLabel.text = "Longitude: "+devicePosition.getStringValues().longitude

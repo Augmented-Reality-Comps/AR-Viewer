@@ -14,7 +14,7 @@ class DevicePosition {
     var pitch: Float = 0.0
     var roll: Float = 0.0
     var yaw: Float = 0.0
-    var initialized = false
+    var hasPosition = false
 
     func getValues() -> (latitude: Float, longitude: Float, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
         return (latitude, longitude, altitude, pitch, roll, yaw)
@@ -28,6 +28,21 @@ class DevicePosition {
             String(format: "%f",pitch),
             String(format: "%f",roll),
             String(format: "%f",yaw))
+    }
+    
+    func setPosition(latitude: Float, longitude: Float, altitude: Float)  {
+        setLatitude(latitude)
+        setLongitude(longitude)
+        setAltitude(altitude)
+        if !hasPosition {
+            setHasPosition(true)
+        }
+    }
+    
+    func setAngle(pitch: Float, roll: Float, yaw: Float)  {
+        setPitch(pitch)
+        setRoll(roll)
+        setYaw(yaw)
     }
     
     func setLatitude (latitude: Float) {
@@ -51,8 +66,11 @@ class DevicePosition {
     }
     
     func setYaw (yaw: Float) {
-        self.initialized = true
         self.yaw = yaw
+    }
+    
+    func setHasPosition(hasPosition: Bool) {
+        self.hasPosition = hasPosition
     }
     
 }
