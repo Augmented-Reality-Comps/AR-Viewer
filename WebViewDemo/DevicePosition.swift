@@ -19,7 +19,7 @@ class DevicePosition {
     func getValues() -> (latitude: Float, longitude: Float, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
         return (latitude, longitude, altitude, pitch, roll, yaw)
     }
-    
+     
     func getStringValues() -> (latitude: NSString, longitude: NSString, altitude: NSString, pitch: NSString, roll: NSString, yaw: NSString) {
         return
             (String(format: "%f",latitude),

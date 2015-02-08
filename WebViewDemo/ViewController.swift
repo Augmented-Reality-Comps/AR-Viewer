@@ -19,6 +19,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var angleLabel: UILabel!
+    var refreshButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
     
     var devicePosition: DevicePosition!
     
@@ -50,6 +51,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
                 }
             }
         }
+        
+        refreshButton.frame = CGRectMake(334, 800, 100, 50)
+        refreshButton.backgroundColor = UIColor.whiteColor()
+        refreshButton.setTitle("Refresh", forState: UIControlState.Normal)
+        refreshButton.addTarget(self, action: "refreshAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(refreshButton)
+        
+    }
+    
+    func refreshAction(sender:UIButton!) {
+        initPage()
     }
     
     func initManagers() {
@@ -57,7 +69,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-        self.motionManager.deviceMotionUpdateInterval = 0.01
+        self.motionManager.deviceMotionUpdateInterval = 0.001
         self.motionManager.startDeviceMotionUpdates()
     }
     
@@ -67,7 +79,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             //device.focusMode = .Locked
             device.unlockForConfiguration()
         }
-        
     }
     
     func beginSession() {
@@ -116,6 +127,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             toRun += ", " + devicePosition.getStringValues().roll
             toRun += ", " + devicePosition.getStringValues().yaw
             toRun += ")"
+//            toRun = "updateScene(4446248.0, -9315378.0, 290"
+//            toRun += ", " + devicePosition.getStringValues().pitch
+//            toRun += ", " + devicePosition.getStringValues().roll
+//            toRun += ", " + devicePosition.getStringValues().yaw
+//            toRun += ")"
+            
             webView.stringByEvaluatingJavaScriptFromString(toRun)
         }
     }
