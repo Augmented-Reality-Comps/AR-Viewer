@@ -6,17 +6,19 @@
 //
 
 import Foundation
+import CoreMotion
+import CoreLocation
 
 class DevicePosition {
-    var latitude: Float = 0.0
-    var longitude: Float = 0.0
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
     var altitude: Float = 0.0
     var pitch: Float = 0.0
     var roll: Float = 0.0
     var yaw: Float = 0.0
     var hasPosition = false
 
-    func getValues() -> (latitude: Float, longitude: Float, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
+    func getValues() -> (latitude: Double, longitude: Double, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
         return (latitude, longitude, altitude, pitch, roll, yaw)
     }
      
@@ -30,7 +32,16 @@ class DevicePosition {
             String(format: "%f",yaw))
     }
     
-    func setPosition(latitude: Float, longitude: Float, altitude: Float)  {
+    func setLocation(location: CLLocation?) {
+        if (location != nil) {
+            self.setLatitude(Double(location!.coordinate.latitude * 1000))
+            self.setLongitude(Double(location!.coordinate.longitude * 1000))
+            self.setAltitude( Float(location!.altitude))
+            self.hasPosition = true
+        }
+    }
+    
+    func setPosition(latitude: Double, longitude: Double, altitude: Float)  {
         setLatitude(latitude)
         setLongitude(longitude)
         setAltitude(altitude)
@@ -45,11 +56,19 @@ class DevicePosition {
         setYaw(yaw)
     }
     
-    func setLatitude (latitude: Float) {
+    func setAttitude(attitude: CMAttitude?) {
+        if (attitude != nil) {
+            self.setPitch(Float(attitude!.pitch))
+            self.setRoll(Float(attitude!.roll))
+            self.setYaw(Float(attitude!.yaw))
+        }
+    }
+    
+    func setLatitude (latitude: Double) {
         self.latitude = latitude
     }
     
-    func setLongitude (longitude: Float) {
+    func setLongitude (longitude: Double) {
         self.longitude = longitude
     }
     

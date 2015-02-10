@@ -34,14 +34,20 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJV-GI-cq8">
+                                <rect key="frame" x="16" y="191" width="375" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D4a-s6-mKg">
-                                <rect key="frame" x="368" y="80" width="600" height="93"/>
+                                <rect key="frame" x="368" y="53" width="600" height="120"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <webView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="igD-RW-O2X">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="1047"/>
+                                <rect key="frame" x="0.0" y="-23" width="768" height="1047"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <variation key="heightClass=regular" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="0.0" y="72" width="600" height="333"/>
@@ -61,6 +67,7 @@
                     <connections>
                         <outlet property="altitudeLabel" destination="TLK-Pf-P6H" id="6yO-Sq-04u"/>
                         <outlet property="angleLabel" destination="D4a-s6-mKg" id="ajk-yn-YIr"/>
+                        <outlet property="counterLabel" destination="KJV-GI-cq8" id="rUH-Zm-ZfV"/>
                         <outlet property="latitudeLabel" destination="L7i-aU-I5n" id="Ka5-72-vkR"/>
                         <outlet property="longitudeLabel" destination="t62-WD-RbD" id="BTr-bo-oNb"/>
                         <outlet property="webView" destination="igD-RW-O2X" id="ozk-Oi-fJ8"/>
