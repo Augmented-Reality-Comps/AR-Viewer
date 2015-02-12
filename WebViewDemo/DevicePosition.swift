@@ -10,6 +10,8 @@ import CoreMotion
 import CoreLocation
 
 class DevicePosition {
+    let latMultiplier: Double = 111000
+    let lonMultiplier: Double = 79000
     var latitude: Double = 0.0
     var longitude: Double = 0.0
     var altitude: Float = 0.0
@@ -17,9 +19,16 @@ class DevicePosition {
     var roll: Float = 0.0
     var yaw: Float = 0.0
     var hasPosition = false
+    var queriedLatitude: Double = 0.0
+    var queriedLongitude: Double = 0.0
+    
 
     func getValues() -> (latitude: Double, longitude: Double, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
         return (latitude, longitude, altitude, pitch, roll, yaw)
+    }
+    
+    func getQueriedValues() -> (latitude: Double, longitude: Double) {
+        return (queriedLatitude, queriedLongitude)
     }
      
     func getStringValues() -> (latitude: NSString, longitude: NSString, altitude: NSString, pitch: NSString, roll: NSString, yaw: NSString) {
@@ -34,10 +43,22 @@ class DevicePosition {
     
     func setLocation(location: CLLocation?) {
         if (location != nil) {
-            self.setLatitude(Double(location!.coordinate.latitude * 1000))
-            self.setLongitude(Double(location!.coordinate.longitude * 1000))
+            self.setLatitude(Double(location!.coordinate.latitude * latMultiplier))
+            self.setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
             self.setAltitude( Float(location!.altitude))
+            
+            //Test values for scaling stuff
+            /*self.setLatitude(444625.6)
+            self.setLongitude(-931536.9)
+            self.setAltitude(285)*/
             self.hasPosition = true
+        }
+    }
+    
+    func setQueriedLocation(location: CLLocation?) {
+        if (location != nil) {
+            self.setQueriedLatitude(Double(location!.coordinate.latitude * 1000))
+            self.setQueriedLongitude(Double(location!.coordinate.longitude * 1000))
         }
     }
     
@@ -48,12 +69,6 @@ class DevicePosition {
         if !hasPosition {
             setHasPosition(true)
         }
-    }
-    
-    func setAngle(pitch: Float, roll: Float, yaw: Float)  {
-        setPitch(pitch)
-        setRoll(roll)
-        setYaw(yaw)
     }
     
     func setAttitude(attitude: CMAttitude?) {
@@ -92,4 +107,11 @@ class DevicePosition {
         self.hasPosition = hasPosition
     }
     
+    func setQueriedLatitude (latitude: Double) {
+        self.queriedLatitude = latitude
+    }
+    
+    func setQueriedLongitude (longitude: Double) {
+        self.queriedLongitude = longitude
+    }
 }

@@ -25,7 +25,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     @IBOutlet weak var counterLabel: UILabel!
     
     var refreshButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-    
     var devicePosition: DevicePosition!
     
     @IBOutlet var webView: UIWebView!
@@ -62,20 +61,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         refreshButton.setTitle("Refresh", forState: UIControlState.Normal)
         refreshButton.addTarget(self, action: "refreshAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(refreshButton)
+        
         let updateSelector : Selector = "update"
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: updateSelector, userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
         
     }
     
     func update() {
-        println("updating")
+        println("---UPDATING---")
+        if (self.updateCounter % 15000 == 0) {
+            println("---Refreshing---")
+            initPage()
+        }
+        
+        if (self.updateCounter % 6000 == 0) {
+            var queried = self.devicePosition.getQueriedValues()
+            println("---Refreshing---")
+            initPage()
+        }
+        
         self.updateCounter += 1
         
-        //update device position
+        // Update device position
         self.devicePosition.setLocation(self.locationManager.location)
         println(self.locationManager.location)
         self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
         
+        // Update location labels
         self.latitudeLabel.text = "Latitude: \(devicePosition.latitude)"
         self.longitudeLabel.text = "Longitude: \(devicePosition.longitude)"
         self.altitudeLabel.text = "Altitude: \(devicePosition.altitude)"
@@ -86,8 +98,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
     
-
-    
     func refreshAction(sender:UIButton!) {
         initPage()
     }
@@ -97,7 +107,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-        self.motionManager.deviceMotionUpdateInterval = 0.01
+        self.motionManager.deviceMotionUpdateInterval = 0.1
         self.motionManager.startDeviceMotionUpdates()
     }
     
@@ -148,60 +158,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         if refresh {
             initPage()
         }
-        /*
-        if devicePosition.hasPosition {
-            var toRun = "updateScene("
-            toRun += devicePosition.getStringValues().latitude
-            toRun += ", " + devicePosition.getStringValues().longitude
-            toRun += ", " + devicePosition.getStringValues().altitude
-            toRun += ", " + devicePosition.getStringValues().pitch
-            toRun += ", " + devicePosition.getStringValues().roll
-            toRun += ", " + devicePosition.getStringValues().yaw
-            toRun += ")"
-//            toRun = "updateScene(4446248.0, -9315378.0, 290"
-//            toRun += ", " + devicePosition.getStringValues().pitch
-//            toRun += ", " + devicePosition.getStringValues().roll
-//            toRun += ", " + devicePosition.getStringValues().yaw
-//            toRun += ")"
-            
-            webView.stringByEvaluatingJavaScriptFromString(toRun)
-        } */
     }
-    
-    
     
     // Checks if the device has position information and
     // fetches the html, js, and dae from the server
     // Doesn't need attitude data
-    func initPage() {
+    func initPage() -> Bool {
         if (devicePosition.hasPosition) {
+            self.devicePosition.setQueriedLocation(self.locationManager.location)
             var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
             loc += "latitude=" + devicePosition.getStringValues().latitude
             loc += "&longitude=" + devicePosition.getStringValues().longitude
             loc += "&altitude=" + devicePosition.getStringValues().altitude
             loc += "&pitch=0&roll=0&yaw=0"
-            println(loc)
             formatURL(loc)
             refresh = false
+            return true
         }
+        return false
     }
-    
-    // Updates the devicePosition object with current values of lat, long, alt, pitch, roll, and yaw
-    /*
-    func getMotionData(location: CLLocation){
-        devicePosition.setPosition(Float(location.coordinate.latitude * 100000), longitude: Float(location.coordinate.longitude * 100000), altitude: Float(location.altitude))
-        
-        if let attitude = motionManager.deviceMotion?.attitude? {
-            devicePosition.setAngle(Float(motionManager.deviceMotion.attitude.pitch), roll: Float(motionManager.deviceMotion.attitude.roll), yaw: Float(motionManager.deviceMotion.attitude.yaw))
-            
-            //Labels
-            latitudeLabel.text = "Latitude: "+devicePosition.getStringValues().latitude
-            longitudeLabel.text = "Longitude: "+devicePosition.getStringValues().longitude
-            altitudeLabel.text = "Altitude: "+devicePosition.getStringValues().altitude
-            angleLabel.text = "Pitch: "+devicePosition.getStringValues().pitch+"\nRoll: "+devicePosition.getStringValues().roll+"\nYaw: "+devicePosition.getStringValues().yaw
-        }
-    }
-*/
     
     func formatURL(loc: String){
         let url = NSURL(string: loc)
@@ -209,7 +184,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         webView.loadRequest(request)
     }
     
-    override func didReceiveMemoryWarning() {         super.didReceiveMemoryWarning()
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 }
