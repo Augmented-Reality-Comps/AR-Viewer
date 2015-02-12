@@ -63,7 +63,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.view.addSubview(refreshButton)
         
         let updateSelector : Selector = "update"
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: updateSelector, userInfo: nil, repeats: true)
         
     }
     
@@ -107,7 +107,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-        self.motionManager.deviceMotionUpdateInterval = 0.1
+        self.motionManager.deviceMotionUpdateInterval = 0.01
         self.motionManager.startDeviceMotionUpdates()
     }
     

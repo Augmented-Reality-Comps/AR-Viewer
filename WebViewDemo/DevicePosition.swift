@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import Darwin
 import CoreMotion
 import CoreLocation
 
 class DevicePosition {
+    //Multipliers based on
     let latMultiplier: Double = 111000
     let lonMultiplier: Double = 79000
     var latitude: Double = 0.0
@@ -21,6 +23,8 @@ class DevicePosition {
     var hasPosition = false
     var queriedLatitude: Double = 0.0
     var queriedLongitude: Double = 0.0
+    
+    var pi = M_PI
     
 
     func getValues() -> (latitude: Double, longitude: Double, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
@@ -66,6 +70,7 @@ class DevicePosition {
         setLatitude(latitude)
         setLongitude(longitude)
         setAltitude(altitude)
+        //setAltitude(270)
         if !hasPosition {
             setHasPosition(true)
         }
@@ -74,8 +79,11 @@ class DevicePosition {
     func setAttitude(attitude: CMAttitude?) {
         if (attitude != nil) {
             self.setPitch(Float(attitude!.pitch))
+            //self.setPitch(Float(pi/2))
+            self.setRoll(Float(pi/2))
+            self.setYaw(0)
             self.setRoll(Float(attitude!.roll))
-            self.setYaw(Float(attitude!.yaw))
+            //self.setYaw(Float(attitude!.yaw))
         }
     }
     

@@ -26,7 +26,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		48045349196BD02000EBD3A6 /* WebViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		48045349196BD02000EBD3A6 /* AR Comps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AR Comps.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4804534D196BD02000EBD3A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4804534E196BD02000EBD3A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48045350196BD02000EBD3A6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,8 +59,8 @@
 		48045340196BD02000EBD3A6 = {
 			isa = PBXGroup;
 			children = (
-				4804534B196BD02000EBD3A6 /* stuff */,
-				4804535E196BD02000EBD3A6 /* WebViewDemoTests */,
+				4804534B196BD02000EBD3A6 /* ARComps */,
+				4804535E196BD02000EBD3A6 /* ARCompsDemoTests */,
 				4804534A196BD02000EBD3A6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,13 +68,13 @@
 		4804534A196BD02000EBD3A6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				48045349196BD02000EBD3A6 /* WebViewDemo.app */,
+				48045349196BD02000EBD3A6 /* AR Comps.app */,
 				4804535B196BD02000EBD3A6 /* WebViewDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4804534B196BD02000EBD3A6 /* stuff */ = {
+		4804534B196BD02000EBD3A6 /* ARComps */ = {
 			isa = PBXGroup;
 			children = (
 				4804534E196BD02000EBD3A6 /* AppDelegate.swift */,
@@ -84,7 +84,7 @@
 				48045355196BD02000EBD3A6 /* Images.xcassets */,
 				4804534C196BD02000EBD3A6 /* Supporting Files */,
 			);
-			name = stuff;
+			name = ARComps;
 			path = WebViewDemo;
 			sourceTree = "<group>";
 		};
@@ -96,12 +96,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		4804535E196BD02000EBD3A6 /* WebViewDemoTests */ = {
+		4804535E196BD02000EBD3A6 /* ARCompsDemoTests */ = {
 			isa = PBXGroup;
 			children = (
 				48045361196BD02000EBD3A6 /* WebViewDemoTests.swift */,
 				4804535F196BD02000EBD3A6 /* Supporting Files */,
 			);
+			name = ARCompsDemoTests;
 			path = WebViewDemoTests;
 			sourceTree = "<group>";
 		};
@@ -130,7 +131,7 @@
 			);
 			name = WebViewDemo;
 			productName = WebViewDemo;
-			productReference = 48045349196BD02000EBD3A6 /* WebViewDemo.app */;
+			productReference = 48045349196BD02000EBD3A6 /* AR Comps.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4804535A196BD02000EBD3A6 /* WebViewDemoTests */ = {
@@ -158,7 +159,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0600;
-				ORGANIZATIONNAME = "Ravi Shankar";
+				ORGANIZATIONNAME = "Carleton College";
 				TargetAttributes = {
 					48045348196BD02000EBD3A6 = {
 						CreatedOnToolsVersion = 6.0;
@@ -170,7 +171,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "stuff" */;
+			buildConfigurationList = 48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "ARComps" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -334,7 +335,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = WebViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "AR Comps";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -347,7 +348,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = WebViewDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "AR Comps";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
@@ -389,7 +390,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "stuff" */ = {
+		48045344196BD02000EBD3A6 /* Build configuration list for PBXProject "ARComps" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				48045363196BD02000EBD3A6 /* Debug */,
