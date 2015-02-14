@@ -68,6 +68,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     }
     
     func update() {
+        /*
         println("---UPDATING---")
         if (self.updateCounter % 15000 == 0) {
             println("---Refreshing---")
@@ -78,7 +79,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             var queried = self.devicePosition.getQueriedValues()
             println("---Refreshing---")
             initPage()
-        }
+        } */
         
         self.updateCounter += 1
         

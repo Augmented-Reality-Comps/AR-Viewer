@@ -50,6 +50,7 @@ class DevicePosition {
             self.setLatitude(Double(location!.coordinate.latitude * latMultiplier))
             self.setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
             self.setAltitude( Float(location!.altitude))
+            //self.setAttitude(Float(0))
             
             //Test values for scaling stuff
             /*self.setLatitude(444625.6)
@@ -69,8 +70,8 @@ class DevicePosition {
     func setPosition(latitude: Double, longitude: Double, altitude: Float)  {
         setLatitude(latitude)
         setLongitude(longitude)
-        setAltitude(altitude)
-        //setAltitude(270)
+        //setAltitude(altitude)
+        setAltitude(0)
         if !hasPosition {
             setHasPosition(true)
         }
@@ -80,10 +81,10 @@ class DevicePosition {
         if (attitude != nil) {
             self.setPitch(Float(attitude!.pitch))
             //self.setPitch(Float(pi/2))
-            self.setRoll(Float(pi/2))
-            self.setYaw(0)
+            //self.setRoll(Float(pi/2))
+            //self.setYaw(0)
             self.setRoll(Float(attitude!.roll))
-            //self.setYaw(Float(attitude!.yaw))
+            self.setYaw(Float(attitude!.yaw))
         }
     }
     
@@ -96,7 +97,8 @@ class DevicePosition {
     }
     
     func setAltitude (altitude: Float) {
-        self.altitude = altitude
+        //self.altitude = altitude
+        self.altitude = 10
     }
     
     func setPitch (pitch: Float) {
