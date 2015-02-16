@@ -47,8 +47,10 @@ class DevicePosition {
     
     func setLocation(location: CLLocation?) {
         if (location != nil) {
-            self.setLatitude(Double(location!.coordinate.latitude * latMultiplier))
-            self.setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
+            //self.setLatitude(Double(location!.coordinate.latitude * latMultiplier))
+            //self.setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
+            self.setLatitude(Double(location!.coordinate.latitude ))
+            self.setLongitude(Double(location!.coordinate.longitude ))
             self.setAltitude( Float(location!.altitude))
             //self.setAttitude(Float(0))
             
@@ -97,8 +99,8 @@ class DevicePosition {
     }
     
     func setAltitude (altitude: Float) {
-        //self.altitude = altitude
-        self.altitude = 10
+        self.altitude = altitude
+        //self.altitude = 10
     }
     
     func setPitch (pitch: Float) {

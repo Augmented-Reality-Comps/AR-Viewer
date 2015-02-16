@@ -24,6 +24,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     @IBOutlet weak var angleLabel: UILabel!
     @IBOutlet weak var counterLabel: UILabel!
     
+    var Timestamp: String {
+        get {
+            return "\(NSDate().timeIntervalSince1970 * 1000)"
+        }
+    }
+    
     var refreshButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
     var devicePosition: DevicePosition!
     
@@ -67,6 +73,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
     }
     
+    func printLog() {
+        /*
+        println("Timestamp: \(Timestamp)")
+        println("Latitude: \(devicePosition.latitude)")
+        println("Longitude: \(devicePosition.longitude)")
+        println("_______")*/
+        println("\(updateCounter), \(devicePosition.latitude), \(devicePosition.longitude)")
+    }
+    
+    
     func update() {
         /*
         println("---UPDATING---")
@@ -85,7 +101,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
         // Update device position
         self.devicePosition.setLocation(self.locationManager.location)
-        println(self.locationManager.location)
+        //println(self.locationManager.location)
         self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
         
         // Update location labels
@@ -97,6 +113,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
         var loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
         webView.stringByEvaluatingJavaScriptFromString(loc)
+        printLog()
     }
     
     func refreshAction(sender:UIButton!) {
