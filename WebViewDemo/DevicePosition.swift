@@ -11,9 +11,11 @@ import CoreMotion
 import CoreLocation
 
 class DevicePosition {
-    //Multipliers based on
+    //Multipliers based on distance at Northfield's coordinates
     let latMultiplier: Double = 111000
     let lonMultiplier: Double = 79000
+    //let latMultiplier: Double = 1
+    //let lonMultiplier: Double = 1
     var latitude: Double = 0.0
     var longitude: Double = 0.0
     var altitude: Float = 0.0
@@ -24,6 +26,8 @@ class DevicePosition {
     var queriedLatitude: Double = 0.0
     var queriedLongitude: Double = 0.0
     
+    //True - location of phone permanently (0,0,0)
+    //False - use actual phone data
     var staticLocation = true
     
     var pi = M_PI
@@ -54,9 +58,9 @@ class DevicePosition {
                 self.setLongitude(0)
                 self.setAltitude(0)
             } else {
-                self.setLatitude(Double(location!.coordinate.latitude ))
-                self.setLongitude(Double(location!.coordinate.longitude ))
-                self.setAltitude( Float(location!.altitude))
+                self.setLatitude(Double(location!.coordinate.latitude * latMultiplier ))
+                self.setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
+                self.setAltitude(Float(location!.altitude))
             }
             self.hasPosition = true
         }
@@ -81,9 +85,6 @@ class DevicePosition {
     func setAttitude(attitude: CMAttitude?) {
         if (attitude != nil) {
             self.setPitch(Float(attitude!.pitch))
-            //self.setPitch(Float(pi/2))
-            //self.setRoll(Float(pi/2))
-            //self.setYaw(0)
             self.setRoll(Float(attitude!.roll))
             self.setYaw(Float(attitude!.yaw))
         }
@@ -99,7 +100,6 @@ class DevicePosition {
     
     func setAltitude (altitude: Float) {
         self.altitude = altitude
-        //self.altitude = 10
     }
     
     func setPitch (pitch: Float) {
@@ -108,14 +108,10 @@ class DevicePosition {
     
     func setRoll (roll: Float) {
         self.roll = roll
-        var degrees = ((Double(roll)) * 360/(2*pi))
-        println(degrees)
-        
     }
     
     func setYaw (yaw: Float) {
         self.yaw = yaw
-        //self.yaw = 0
     }
     
     func setHasPosition(hasPosition: Bool) {

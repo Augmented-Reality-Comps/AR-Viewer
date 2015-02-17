@@ -7,6 +7,7 @@ import UIKit
 import CoreLocation
 import CoreMotion
 import AVFoundation
+import Darwin
 
 class ViewController: UIViewController, CLLocationManagerDelegate  {
     
@@ -15,6 +16,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     var captureDevice : AVCaptureDevice?
     var refresh = true
     var updateCounter = 0
+    
+    var lookAround = true
     
     var timer = NSTimer()
 
@@ -68,35 +71,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         refreshButton.addTarget(self, action: "refreshAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(refreshButton)
         
+        //sets intervals for pulling location data
         let updateSelector : Selector = "update"
         timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: updateSelector, userInfo: nil, repeats: true)
         
     }
     
     func printLog() {
-        /*
-        println("Timestamp: \(Timestamp)")
-        println("Latitude: \(devicePosition.latitude)")
-        println("Longitude: \(devicePosition.longitude)")
-        println("_______")*/
         println("\(updateCounter), \(devicePosition.latitude), \(devicePosition.longitude)")
     }
     
     
     func update() {
-        /*
-        println("---UPDATING---")
-        if (self.updateCounter % 15000 == 0) {
-            println("---Refreshing---")
-            initPage()
-        }
-        
-        if (self.updateCounter % 6000 == 0) {
-            var queried = self.devicePosition.getQueriedValues()
-            println("---Refreshing---")
-            initPage()
-        } */
-        
         self.updateCounter += 1
         
         // Update device position
@@ -111,13 +97,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.angleLabel.text = "Pitch: \(devicePosition.pitch)\nRoll: \(devicePosition.roll)\nYaw: \(devicePosition.yaw)"
         self.counterLabel.text = "Counter: \(self.updateCounter)"
         
+        //old, x,y,z -> pitch, roll, yaw
         //var loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), \(self.devicePosition.roll))"
-        //roll = 0
-        var loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), 0)"
-        //yaw = 0
-        //var loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), \(self.devicePosition.roll))"
+        
+        var loc = ""
+        //LookAroundDemo
+        if (lookAround) {
+            loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw),\(self.devicePosition.roll/3.14))"
+        } else {
+            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), \(self.devicePosition.roll))"
+        }
+        printLog()
         webView.stringByEvaluatingJavaScriptFromString(loc)
-        //printLog()
     }
     
     func refreshAction(sender:UIButton!) {
@@ -188,15 +179,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     func initPage() -> Bool {
         if (devicePosition.hasPosition) {
             self.devicePosition.setQueriedLocation(self.locationManager.location)
-            /*var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
-            loc += "latitude=" + devicePosition.getStringValues().latitude
-            loc += "&longitude=" + devicePosition.getStringValues().longitude
-            loc += "&altitude=" + devicePosition.getStringValues().altitude
-            loc += "&pitch=0&roll=0&yaw=0" */
-            var loc = "http://people.carleton.edu/~conleel/comps/demo/lookAround.html"
-            //var loc = "http://people.carleton.edu/~conleel/comps/demo/ar_test.html"
-
-            //var loc = "http://www.google.com"
+            
+            var loc = ""
+            
+            if (lookAround) {
+                //URL for lookaround demo
+                //loc = "http://people.carleton.edu/~conleel/comps/demo/lookAround.html"
+                loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/lookAround/lookAround.html"
+            } else {
+            
+                //URL for location based demo
+                loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
+                loc += "latitude=" + devicePosition.getStringValues().latitude
+                loc += "&longitude=" + devicePosition.getStringValues().longitude
+                loc += "&altitude=" + devicePosition.getStringValues().altitude
+                loc += "&pitch=0&roll=0&yaw=0"
+            }
             formatURL(loc)
             refresh = false
             return true
