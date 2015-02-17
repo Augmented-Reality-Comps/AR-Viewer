@@ -24,6 +24,8 @@ class DevicePosition {
     var queriedLatitude: Double = 0.0
     var queriedLongitude: Double = 0.0
     
+    var staticLocation = true
+    
     var pi = M_PI
     
 
@@ -47,17 +49,15 @@ class DevicePosition {
     
     func setLocation(location: CLLocation?) {
         if (location != nil) {
-            //self.setLatitude(Double(location!.coordinate.latitude * latMultiplier))
-            //self.setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
-            self.setLatitude(Double(location!.coordinate.latitude ))
-            self.setLongitude(Double(location!.coordinate.longitude ))
-            self.setAltitude( Float(location!.altitude))
-            //self.setAttitude(Float(0))
-            
-            //Test values for scaling stuff
-            /*self.setLatitude(444625.6)
-            self.setLongitude(-931536.9)
-            self.setAltitude(285)*/
+            if staticLocation {
+                self.setLatitude(0)
+                self.setLongitude(0)
+                self.setAltitude(0)
+            } else {
+                self.setLatitude(Double(location!.coordinate.latitude ))
+                self.setLongitude(Double(location!.coordinate.longitude ))
+                self.setAltitude( Float(location!.altitude))
+            }
             self.hasPosition = true
         }
     }
@@ -72,8 +72,7 @@ class DevicePosition {
     func setPosition(latitude: Double, longitude: Double, altitude: Float)  {
         setLatitude(latitude)
         setLongitude(longitude)
-        //setAltitude(altitude)
-        setAltitude(0)
+        setAltitude(altitude)
         if !hasPosition {
             setHasPosition(true)
         }
@@ -109,10 +108,14 @@ class DevicePosition {
     
     func setRoll (roll: Float) {
         self.roll = roll
+        var degrees = ((Double(roll)) * 360/(2*pi))
+        println(degrees)
+        
     }
     
     func setYaw (yaw: Float) {
         self.yaw = yaw
+        //self.yaw = 0
     }
     
     func setHasPosition(hasPosition: Bool) {

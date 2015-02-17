@@ -111,9 +111,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.angleLabel.text = "Pitch: \(devicePosition.pitch)\nRoll: \(devicePosition.roll)\nYaw: \(devicePosition.yaw)"
         self.counterLabel.text = "Counter: \(self.updateCounter)"
         
-        var loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
+        //var loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), \(self.devicePosition.roll))"
+        //roll = 0
+        var loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), 0)"
+        //yaw = 0
+        //var loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), \(self.devicePosition.roll))"
         webView.stringByEvaluatingJavaScriptFromString(loc)
-        printLog()
+        //printLog()
     }
     
     func refreshAction(sender:UIButton!) {
@@ -184,11 +188,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     func initPage() -> Bool {
         if (devicePosition.hasPosition) {
             self.devicePosition.setQueriedLocation(self.locationManager.location)
-            var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
+            /*var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
             loc += "latitude=" + devicePosition.getStringValues().latitude
             loc += "&longitude=" + devicePosition.getStringValues().longitude
             loc += "&altitude=" + devicePosition.getStringValues().altitude
-            loc += "&pitch=0&roll=0&yaw=0"
+            loc += "&pitch=0&roll=0&yaw=0" */
+            var loc = "http://people.carleton.edu/~conleel/comps/demo/lookAround.html"
+            //var loc = "http://people.carleton.edu/~conleel/comps/demo/ar_test.html"
+
+            //var loc = "http://www.google.com"
             formatURL(loc)
             refresh = false
             return true
