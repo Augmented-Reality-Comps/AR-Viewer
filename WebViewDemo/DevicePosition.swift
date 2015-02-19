@@ -11,8 +11,11 @@ import CoreLocation
 
 class DevicePosition {
     //Multipliers based on distance at Northfield's coordinates
-    let latMultiplier: Double = 111000
-    let lonMultiplier: Double = 79000
+    //let latMultiplier: Double = 111000
+    //let lonMultiplier: Double = 79000
+    
+    let latMultiplier: Double = 100000
+    let lonMultiplier: Double = 100000
 
     var latitude: Double = 0.0
     var longitude: Double = 0.0

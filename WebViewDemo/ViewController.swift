@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  ARComps
+//  WebViewDemo
 //
 
 import UIKit
@@ -16,6 +16,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     var captureDevice : AVCaptureDevice?
     var refresh = true
     var updateCounter = 0
+    var pi = M_PI
         
     var timer = NSTimer()
 
@@ -90,7 +91,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.longitudeLabel.text = "Longitude: \(devicePosition.longitude)"
         self.altitudeLabel.text = "Altitude: \(devicePosition.altitude)"
         self.angleLabel.text = "Pitch: \(devicePosition.pitch)\nRoll: \(devicePosition.roll)\nYaw: \(devicePosition.yaw)"
-        
         var loc = ""
         
         if (devicePosition.getStaticLocation()) {
@@ -98,7 +98,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), 1.55, \(self.devicePosition.yaw),0)"
         } else {
             //WalkAroundDemo
-            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.yaw), 0)"
+            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(pi/2), \(self.devicePosition.yaw), 0)"
         }
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
@@ -123,7 +123,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         }
     }
     
-    //Configures camera and labels
     func beginSession() {
         configureDevice()
         
