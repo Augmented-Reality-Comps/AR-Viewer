@@ -1,6 +1,5 @@
 //
 //  DevicePosition.swift
-//  stuff
 //
 //  Created by comps on 2/6/15.
 //
@@ -14,8 +13,7 @@ class DevicePosition {
     //Multipliers based on distance at Northfield's coordinates
     let latMultiplier: Double = 111000
     let lonMultiplier: Double = 79000
-    //let latMultiplier: Double = 1
-    //let lonMultiplier: Double = 1
+
     var latitude: Double = 0.0
     var longitude: Double = 0.0
     var altitude: Float = 0.0
@@ -23,22 +21,16 @@ class DevicePosition {
     var roll: Float = 0.0
     var yaw: Float = 0.0
     var hasPosition = false
-    var queriedLatitude: Double = 0.0
-    var queriedLongitude: Double = 0.0
     
     //True - location of phone permanently (0,0,0)
     //False - use actual phone data
-    var staticLocation = true
+    var staticLocation = false
     
     var pi = M_PI
     
 
     func getValues() -> (latitude: Double, longitude: Double, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
         return (latitude, longitude, altitude, pitch, roll, yaw)
-    }
-    
-    func getQueriedValues() -> (latitude: Double, longitude: Double) {
-        return (queriedLatitude, queriedLongitude)
     }
      
     func getStringValues() -> (latitude: NSString, longitude: NSString, altitude: NSString, pitch: NSString, roll: NSString, yaw: NSString) {
@@ -49,6 +41,10 @@ class DevicePosition {
             String(format: "%f",pitch),
             String(format: "%f",roll),
             String(format: "%f",yaw))
+    }
+    
+    func getStaticLocation() -> (Bool) {
+        return staticLocation
     }
     
     func setLocation(location: CLLocation?) {
@@ -63,13 +59,6 @@ class DevicePosition {
                 self.setAltitude(Float(location!.altitude))
             }
             self.hasPosition = true
-        }
-    }
-    
-    func setQueriedLocation(location: CLLocation?) {
-        if (location != nil) {
-            self.setQueriedLatitude(Double(location!.coordinate.latitude * 1000))
-            self.setQueriedLongitude(Double(location!.coordinate.longitude * 1000))
         }
     }
     
@@ -116,13 +105,5 @@ class DevicePosition {
     
     func setHasPosition(hasPosition: Bool) {
         self.hasPosition = hasPosition
-    }
-    
-    func setQueriedLatitude (latitude: Double) {
-        self.queriedLatitude = latitude
-    }
-    
-    func setQueriedLongitude (longitude: Double) {
-        self.queriedLongitude = longitude
     }
 }
