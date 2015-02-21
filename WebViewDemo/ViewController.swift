@@ -98,7 +98,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), 1.55, \(self.devicePosition.yaw),0)"
         } else {
             //WalkAroundDemo
-            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(pi/2), \(self.devicePosition.yaw), 0)"
+            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(pi/2), \(self.devicePosition.yaw), 0)"
+            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(devicePosition.pitch), \(self.devicePosition.yaw),0)"
         }
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
@@ -119,6 +120,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     func configureDevice() {
         if let device = captureDevice {
             device.lockForConfiguration(nil)
+            device.focusMode = .Locked
             device.unlockForConfiguration()
         }
     }
