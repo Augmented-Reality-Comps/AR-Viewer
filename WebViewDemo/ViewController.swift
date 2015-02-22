@@ -99,7 +99,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         } else {
             //WalkAroundDemo
             //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(pi/2), \(self.devicePosition.yaw), 0)"
-            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(devicePosition.pitch), \(self.devicePosition.yaw),0)"
+            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(pi/2), \(self.devicePosition.yaw),0)"
+            //hardcoded at bald spot
+            loc = "updateScene(4446109, -9315459, 285, \(devicePosition.pitch), \(self.devicePosition.yaw),0)"
+
         }
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
