@@ -1,6 +1,5 @@
 //
 //  ViewController.swift
-//  WebViewDemo
 //
 
 import UIKit
@@ -98,12 +97,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), 1.55, \(self.devicePosition.yaw+(3.14159/2)),0)"
         } else {
             //WalkAroundDemo
+            //pitch hardcoded
             loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude * -1), 285, \(3.14159/2), \(self.devicePosition.yaw+(3.14159/2)), 0)"
+            
+            //pitch not hardcoded
             //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.yaw+(3.14159/2)),0)"
-            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll),\(self.devicePosition.yaw))"
-            //hardcoded at bald spot
-            //loc = "updateScene(4446109, -9315459, 285, \(pi/2), \(self.devicePosition.yaw),0)"
-
         }
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
@@ -178,13 +176,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
                 //URL for lookaround demo
                 loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/lookAround/lookAround.html"
             } else {
-            
                 //URL for location based demo
                 loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
                 loc += "latitude=" + devicePosition.getStringValues().latitude
                 loc += "&longitude=" + devicePosition.getStringValues().longitude
                 loc += "&altitude=" + devicePosition.getStringValues().altitude
-                //loc += "&pitch=0&roll=0&yaw=0"
             }
             formatURL(loc)
             refresh = false
