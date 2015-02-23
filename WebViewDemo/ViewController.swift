@@ -7,6 +7,7 @@ import UIKit
 import CoreLocation
 import CoreMotion
 import AVFoundation
+import Darwin
 
 class ViewController: UIViewController, CLLocationManagerDelegate  {
     
@@ -15,14 +16,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     var captureDevice : AVCaptureDevice?
     var refresh = true
     var updateCounter = 0
-    
+    var pi = M_PI
+        
     var timer = NSTimer()
 
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var angleLabel: UILabel!
-    @IBOutlet weak var counterLabel: UILabel!
     
     var Timestamp: String {
         get {
@@ -68,40 +69,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         refreshButton.addTarget(self, action: "refreshAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(refreshButton)
         
+        //sets intervals for pulling location data
         let updateSelector : Selector = "update"
         timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: updateSelector, userInfo: nil, repeats: true)
-        
     }
     
     func printLog() {
-        /*
-        println("Timestamp: \(Timestamp)")
-        println("Latitude: \(devicePosition.latitude)")
-        println("Longitude: \(devicePosition.longitude)")
-        println("_______")*/
         println("\(updateCounter), \(devicePosition.latitude), \(devicePosition.longitude)")
     }
     
     
     func update() {
-        /*
-        println("---UPDATING---")
-        if (self.updateCounter % 15000 == 0) {
-            println("---Refreshing---")
-            initPage()
-        }
-        
-        if (self.updateCounter % 6000 == 0) {
-            var queried = self.devicePosition.getQueriedValues()
-            println("---Refreshing---")
-            initPage()
-        } */
-        
         self.updateCounter += 1
         
         // Update device position
         self.devicePosition.setLocation(self.locationManager.location)
-        //println(self.locationManager.location)
         self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
         
         // Update location labels
@@ -109,11 +91,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.longitudeLabel.text = "Longitude: \(devicePosition.longitude)"
         self.altitudeLabel.text = "Altitude: \(devicePosition.altitude)"
         self.angleLabel.text = "Pitch: \(devicePosition.pitch)\nRoll: \(devicePosition.roll)\nYaw: \(devicePosition.yaw)"
-        self.counterLabel.text = "Counter: \(self.updateCounter)"
+        var loc = ""
         
-        var loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
+        if (devicePosition.getStaticLocation()) {
+            //LookAroundDemo
+            loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), 1.55, \(self.devicePosition.yaw),0)"
+        } else {
+            //WalkAroundDemo
+            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(pi/2), \(self.devicePosition.yaw), 0)"
+            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(pi/2), \(self.devicePosition.yaw),0)"
+            //hardcoded at bald spot
+            loc = "updateScene(4446109, -9315459, 285, \(devicePosition.pitch), \(self.devicePosition.yaw),0)"
+
+        }
         webView.stringByEvaluatingJavaScriptFromString(loc)
-        printLog()
     }
     
     func refreshAction(sender:UIButton!) {
@@ -132,7 +123,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     func configureDevice() {
         if let device = captureDevice {
             device.lockForConfiguration(nil)
-            //device.focusMode = .Locked
+            device.focusMode = .Locked
             device.unlockForConfiguration()
         }
     }
@@ -162,7 +153,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.view.bringSubviewToFront(longitudeLabel)
         self.view.bringSubviewToFront(altitudeLabel)
         self.view.bringSubviewToFront(angleLabel)
-        self.view.bringSubviewToFront(counterLabel)
         captureSession.startRunning()
     }
     
@@ -171,7 +161,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     // Constructs a string corresponding to a javascript call to updateScene()
     // Executes the javascript call in the webview
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        //self.getMotionData(manager.location)
         self.devicePosition.setLocation(self.locationManager.location)
         if refresh {
             initPage()
@@ -180,15 +169,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     
     // Checks if the device has position information and
     // fetches the html, js, and dae from the server
-    // Doesn't need attitude data
     func initPage() -> Bool {
         if (devicePosition.hasPosition) {
-            self.devicePosition.setQueriedLocation(self.locationManager.location)
-            var loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
-            loc += "latitude=" + devicePosition.getStringValues().latitude
-            loc += "&longitude=" + devicePosition.getStringValues().longitude
-            loc += "&altitude=" + devicePosition.getStringValues().altitude
-            loc += "&pitch=0&roll=0&yaw=0"
+            var loc = ""
+            
+            if (devicePosition.getStaticLocation()) {
+                //URL for lookaround demo
+                loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/lookAround/lookAround.html"
+            } else {
+            
+                //URL for location based demo
+                loc = "http://cmc307-08.mathcs.carleton.edu/~comps/backend/walkAround/webApp.py?"
+                loc += "latitude=" + devicePosition.getStringValues().latitude
+                loc += "&longitude=" + devicePosition.getStringValues().longitude
+                loc += "&altitude=" + devicePosition.getStringValues().altitude
+                //loc += "&pitch=0&roll=0&yaw=0"
+            }
             formatURL(loc)
             refresh = false
             return true
