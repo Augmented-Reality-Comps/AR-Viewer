@@ -95,13 +95,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
         if (devicePosition.getStaticLocation()) {
             //LookAroundDemo
-            loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), 1.55, \(self.devicePosition.yaw),0)"
+            loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), 1.55, \(self.devicePosition.yaw+(3.14159/2)),0)"
         } else {
             //WalkAroundDemo
-            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), \(pi/2), \(self.devicePosition.yaw), 0)"
-            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(pi/2), \(self.devicePosition.yaw),0)"
+            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude * -1), 285, \(3.14159/2), \(self.devicePosition.yaw+(3.14159/2)), 0)"
+            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.yaw+(3.14159/2)),0)"
+            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll),\(self.devicePosition.yaw))"
             //hardcoded at bald spot
-            loc = "updateScene(4446109, -9315459, 285, \(devicePosition.pitch), \(self.devicePosition.yaw),0)"
+            //loc = "updateScene(4446109, -9315459, 285, \(pi/2), \(self.devicePosition.yaw),0)"
 
         }
         webView.stringByEvaluatingJavaScriptFromString(loc)
