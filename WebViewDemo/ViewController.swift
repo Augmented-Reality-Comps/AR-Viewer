@@ -70,7 +70,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
         //sets intervals for pulling location data
         let updateSelector : Selector = "update"
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.2, target: self, selector: updateSelector, userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
     }
     
     func printLog() {
@@ -98,10 +98,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         } else {
             //WalkAroundDemo
             //pitch hardcoded
-            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude * -1), 285, \(3.14159/2), \(self.devicePosition.yaw+(3.14159/2)), 0)"
+            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude * -1), 285, \(3.14159/2), \(self.devicePosition.yaw+(3.14159/2)), 0)"
             
             //pitch not hardcoded
             //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.yaw+(3.14159/2)),0)"
+            
+            //nothing hardcoded
+            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude * -1), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
         }
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
