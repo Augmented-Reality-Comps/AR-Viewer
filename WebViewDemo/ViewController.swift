@@ -104,7 +104,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.yaw+(3.14159/2)),0)"
             
             //nothing hardcoded
-            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude * -1), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
+            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
+            
+            //location hardcoded at desk
+            //loc = "updateScene(4446261.0, -9315358.5, 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
         }
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
@@ -120,6 +123,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.startUpdatingLocation()
         self.motionManager.deviceMotionUpdateInterval = 0.01
         self.motionManager.startDeviceMotionUpdates()
+        //self.motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrameXTrueNorthZVertical)
+        println(self.motionManager.attitudeReferenceFrame)
     }
     
     func configureDevice() {
