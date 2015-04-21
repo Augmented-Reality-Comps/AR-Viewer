@@ -18,6 +18,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     var pi = M_PI
         
     var timer = NSTimer()
+    var offset: Float = 5.0
 
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
@@ -32,6 +33,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     
     var refreshButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
     var devicePosition: DevicePosition!
+    
+    
+    //TEST CODE
+    //Hardcoded attitude values in testAttitudes
+    //Hardcoded location in testCoordinates
+    //Time slowed down to 1 second in update selector
+    var test = false
+    var testAttitudes = [(0.0,0.0,0),(0.0,0.0,0.1),(0.0,0.0,0.2), (0.0,0.0,0.3),(0.0,0.0,0.4),(0.0,0.0,0.5),(0.0,0.0,0.6),(0.0,0.0,0.7),(0.0,0.0,0.8),(0.0,0.0,0.9),(0.0,0.0,1)]
+    var testCoordinates = (4446080.0, -9315645.0)
     
     @IBOutlet var webView: UIWebView!
     let locationManager = CLLocationManager()
@@ -70,7 +80,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         
         //sets intervals for pulling location data
         let updateSelector : Selector = "update"
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
+        if (test) {
+            timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
+        } else {
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
+        }
     }
     
     func printLog() {
@@ -79,11 +93,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     
     
     func update() {
-        self.updateCounter += 1
-        
         // Update device position
-        self.devicePosition.setLocation(self.locationManager.location)
-        self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
+        if (test) {
+            self.devicePosition.setLatitude(testCoordinates.0)
+            self.devicePosition.setLongitude(testCoordinates.1)
+            if (updateCounter < testAttitudes.count) {
+                self.devicePosition.setPitch(self.testAttitudes[updateCounter].0)
+                self.devicePosition.setRoll(testAttitudes[updateCounter].1)
+                self.devicePosition.setYaw(testAttitudes[updateCounter].2)
+            }
+            else {
+                self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
+            }
+        }
+        else {
+            self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
+            self.devicePosition.setLocation(self.locationManager.location)
+
+        }
         
         // Update location labels
         self.latitudeLabel.text = "Latitude: \(devicePosition.latitude)"
@@ -92,23 +119,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.angleLabel.text = "Pitch: \(devicePosition.pitch)\nRoll: \(devicePosition.roll)\nYaw: \(devicePosition.yaw)"
         var loc = ""
         
-        if (devicePosition.getStaticLocation()) {
-            //LookAroundDemo
-            loc = "updateCamera(\(self.devicePosition.latitude), \(self.devicePosition.longitude), \(self.devicePosition.altitude), 1.55, \(self.devicePosition.yaw+(3.14159/2)),0)"
-        } else {
-            //WalkAroundDemo
-            //pitch hardcoded
-            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude * -1), 285, \(3.14159/2), \(self.devicePosition.yaw+(3.14159/2)), 0)"
-            
-            //pitch not hardcoded
-            //loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.yaw+(3.14159/2)),0)"
-            
-            //nothing hardcoded
-            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
-            
-            //location hardcoded at desk
-            //loc = "updateScene(4446261.0, -9315358.5, 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
-        }
+        
+        //Heading test code, still playing with it
+//        if ((self.locationManager.heading) != nil && offset > 4) {
+//            var heading = (self.locationManager.heading.trueHeading.description as NSString).floatValue
+//            self.offset = heading * 3.14159/180
+//            println("Heading: \(heading)");
+//            println("Offset: \(offset)");
+//
+//        }
+//        
+//        if ((self.locationManager.heading) != nil) {
+//            var heading = (self.locationManager.heading.trueHeading.description as NSString).floatValue
+//            self.offset = (heading * 3.14159/180.0 - 3.14159)
+//            println("Yaw: \(devicePosition.yaw)")
+//            //println("Heading: \(heading)")
+//            println("Offset: \(offset)")
+//            
+//            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(offset))"
+//        }
+        
+        //nothing hardcoded
+        loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
+
+        self.updateCounter += 1
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
     
@@ -124,7 +158,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.motionManager.deviceMotionUpdateInterval = 0.01
         self.motionManager.startDeviceMotionUpdates()
         //self.motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrameXTrueNorthZVertical)
-        println(self.motionManager.attitudeReferenceFrame)
+        println(self.motionManager.attitudeReferenceFrame.value)
+        
+        self.locationManager.startUpdatingHeading()
     }
     
     func configureDevice() {

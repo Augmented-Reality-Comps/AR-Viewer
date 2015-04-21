@@ -106,6 +106,19 @@ class DevicePosition {
         self.yaw = yaw
     }
     
+    func setPitch (pitch: Double) {
+        
+        self.pitch = Float(pitch)
+    }
+    
+    func setRoll (roll: Double) {
+        self.roll = Float(roll)
+    }
+    
+    func setYaw (yaw: Double) {
+        self.yaw = Float(yaw)
+    }
+    
     func setHasPosition(hasPosition: Bool) {
         self.hasPosition = hasPosition
     }
