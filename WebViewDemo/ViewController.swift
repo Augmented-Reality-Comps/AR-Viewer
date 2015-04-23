@@ -25,22 +25,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     @IBOutlet weak var altitudeLabel: UILabel!
     @IBOutlet weak var angleLabel: UILabel!
     
-    var Timestamp: String {
-        get {
-            return "\(NSDate().timeIntervalSince1970 * 1000)"
-        }
-    }
-    
     var refreshButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+    var updateButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+
     var devicePosition: DevicePosition!
     
     
     //TEST CODE
-    //Hardcoded attitude values in testAttitudes
+    //Hardcoded attitude values in testAttitudes (pitch, roll, yaw)
     //Hardcoded location in testCoordinates
-    //Time slowed down to 1 second in update selector
-    var test = false
-    var testAttitudes = [(0.0,0.0,0),(0.0,0.0,0.1),(0.0,0.0,0.2), (0.0,0.0,0.3),(0.0,0.0,0.4),(0.0,0.0,0.5),(0.0,0.0,0.6),(0.0,0.0,0.7),(0.0,0.0,0.8),(0.0,0.0,0.9),(0.0,0.0,1)]
+    var test = true
+    var testAttitudes = [(0.0, 0, 0.0), (0.0, 0.1, 0.0), (0.0, 0.2, 0.0), (0.0, 0.3, 0.0), (0.0, 0.4, 0.0), (0.0, 0.5, 0.0), (0.0, 0.6, 0.0), (0.0, 0.7, 0.0), (0.0, 0.8, 0.0), (0.0, 0.9, 0.0), (0.0, 1.0, 0.0), (0.0, 0.9, 0.0), (0.0, 0.8, 0.0), (0.0, 0.7, 0.0), (0.0, 0.6, 0.0), (0.0, 0.5, 0.0), (0.0, 0.4, 0.0), (0.0, 0.3, 0.0), (0.0, 0.2, 0.0), (0.0, 0.1, 0.0), (0.0, 0.0, 0.0), (0.1, 0.0, 0.0), (0.2, 0.0, 0.0), (0.3, 0.0, 0.0), (0.4, 0.0, 0.0), (0.5, 0.0, 0.0), (0.6, 0.0, 0.0), (0.7, 0.0, 0.0), (0.8, 0.0, 0.0), (0.9, 0.0, 0.0), (1.0, 0.0, 0.0), (1.1, 0.0, 0.0), (1.2, 0.0, 0.0), (1.3, 0.0, 0.0), (1.4, 0.0, 0.0), (1.5, 0.0, 0.0)]
     var testCoordinates = (4446080.0, -9315645.0)
     
     @IBOutlet var webView: UIWebView!
@@ -72,17 +67,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
             }
         }
         
+        //Adds refresh button
         refreshButton.frame = CGRectMake(334, 800, 100, 50)
         refreshButton.backgroundColor = UIColor.whiteColor()
         refreshButton.setTitle("Refresh", forState: UIControlState.Normal)
         refreshButton.addTarget(self, action: "refreshAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(refreshButton)
         
+        //Adds update button
+        updateButton.frame = CGRectMake(334, 900, 100, 50)
+        updateButton.backgroundColor = UIColor.whiteColor()
+        updateButton.setTitle("Update", forState: UIControlState.Normal)
+        updateButton.addTarget(self, action: "updateAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(updateButton)
+        
         //sets intervals for pulling location data
         let updateSelector : Selector = "update"
-        if (test) {
-            timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
-        } else {
+        if (!test) {
             timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: updateSelector, userInfo: nil, repeats: true)
         }
     }
@@ -97,19 +98,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         if (test) {
             self.devicePosition.setLatitude(testCoordinates.0)
             self.devicePosition.setLongitude(testCoordinates.1)
-            if (updateCounter < testAttitudes.count) {
-                self.devicePosition.setPitch(self.testAttitudes[updateCounter].0)
-                self.devicePosition.setRoll(testAttitudes[updateCounter].1)
-                self.devicePosition.setYaw(testAttitudes[updateCounter].2)
+            if (updateCounter == testAttitudes.count) {
+                updateCounter = 0
             }
-            else {
-                self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
-            }
+            self.devicePosition.setPitch(self.testAttitudes[updateCounter].0)
+            self.devicePosition.setRoll(testAttitudes[updateCounter].1)
+            self.devicePosition.setYaw(testAttitudes[updateCounter].2)
         }
         else {
             self.devicePosition.setAttitude(self.motionManager.deviceMotion?.attitude)
             self.devicePosition.setLocation(self.locationManager.location)
-
         }
         
         // Update location labels
@@ -119,35 +117,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.angleLabel.text = "Pitch: \(devicePosition.pitch)\nRoll: \(devicePosition.roll)\nYaw: \(devicePosition.yaw)"
         var loc = ""
         
-        
-        //Heading test code, still playing with it
-//        if ((self.locationManager.heading) != nil && offset > 4) {
-//            var heading = (self.locationManager.heading.trueHeading.description as NSString).floatValue
-//            self.offset = heading * 3.14159/180
-//            println("Heading: \(heading)");
-//            println("Offset: \(offset)");
-//
-//        }
-//        
-//        if ((self.locationManager.heading) != nil) {
-//            var heading = (self.locationManager.heading.trueHeading.description as NSString).floatValue
-//            self.offset = (heading * 3.14159/180.0 - 3.14159)
-//            println("Yaw: \(devicePosition.yaw)")
-//            //println("Heading: \(heading)")
-//            println("Offset: \(offset)")
-//            
-//            loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(offset))"
-//        }
-        
         //nothing hardcoded
         loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
 
+        println("Updated scene: \(devicePosition.pitch), \(devicePosition.roll), \(devicePosition.yaw)")
         self.updateCounter += 1
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
     
     func refreshAction(sender:UIButton!) {
         initPage()
+    }
+    func updateAction(sender:UIButton!) {
+        update()
     }
     
     func initManagers() {
@@ -156,9 +138,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         self.motionManager.deviceMotionUpdateInterval = 0.01
-        self.motionManager.startDeviceMotionUpdates()
-        //self.motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrameXTrueNorthZVertical)
-        println(self.motionManager.attitudeReferenceFrame.value)
+       // self.motionManager.startDeviceMotionUpdates()
+        self.motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrameXTrueNorthZVertical)
         
         self.locationManager.startUpdatingHeading()
     }
