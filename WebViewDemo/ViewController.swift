@@ -18,7 +18,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     var pi = M_PI
         
     var timer = NSTimer()
-    var offset: Float = 5.0
 
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
@@ -34,7 +33,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     //TEST CODE
     //Hardcoded attitude values in testAttitudes (pitch, roll, yaw)
     //Hardcoded location in testCoordinates
-    var test = true
+    var test = false
     var testAttitudes = [(0.0, 0, 0.0), (0.0, 0.1, 0.0), (0.0, 0.2, 0.0), (0.0, 0.3, 0.0), (0.0, 0.4, 0.0), (0.0, 0.5, 0.0), (0.0, 0.6, 0.0), (0.0, 0.7, 0.0), (0.0, 0.8, 0.0), (0.0, 0.9, 0.0), (0.0, 1.0, 0.0), (0.0, 0.9, 0.0), (0.0, 0.8, 0.0), (0.0, 0.7, 0.0), (0.0, 0.6, 0.0), (0.0, 0.5, 0.0), (0.0, 0.4, 0.0), (0.0, 0.3, 0.0), (0.0, 0.2, 0.0), (0.0, 0.1, 0.0), (0.0, 0.0, 0.0), (0.1, 0.0, 0.0), (0.2, 0.0, 0.0), (0.3, 0.0, 0.0), (0.4, 0.0, 0.0), (0.5, 0.0, 0.0), (0.6, 0.0, 0.0), (0.7, 0.0, 0.0), (0.8, 0.0, 0.0), (0.9, 0.0, 0.0), (1.0, 0.0, 0.0), (1.1, 0.0, 0.0), (1.2, 0.0, 0.0), (1.3, 0.0, 0.0), (1.4, 0.0, 0.0), (1.5, 0.0, 0.0)]
     var testCoordinates = (4446080.0, -9315645.0)
     
@@ -118,9 +117,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         var loc = ""
         
         //nothing hardcoded
-        loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw))"
+        loc = "updateScene(\(self.devicePosition.latitude), \(self.devicePosition.longitude), 285, \(self.devicePosition.pitch), \(self.devicePosition.roll), \(self.devicePosition.yaw + 3.14159/2.0))"
 
-        println("Updated scene: \(devicePosition.pitch), \(devicePosition.roll), \(devicePosition.yaw)")
+        //println("Updated scene: \(devicePosition.pitch), \(devicePosition.roll), \(devicePosition.yaw)")
         self.updateCounter += 1
         webView.stringByEvaluatingJavaScriptFromString(loc)
     }
@@ -138,8 +137,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         self.motionManager.deviceMotionUpdateInterval = 0.01
-       // self.motionManager.startDeviceMotionUpdates()
-        self.motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrameXTrueNorthZVertical)
+        //self.motionManager.startDeviceMotionUpdates()
+        self.motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrameXMagneticNorthZVertical)
         
         self.locationManager.startUpdatingHeading()
     }
