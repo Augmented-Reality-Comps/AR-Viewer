@@ -10,9 +10,12 @@ import CoreMotion
 import CoreLocation
 
 class DevicePosition {
-    //Multipliers based on distance at Northfield's coordinates
-    //let latMultiplier: Double = 111000
-    //let lonMultiplier: Double = 79000
+    //TEST CODE
+    //Hardcoded attitude values in testAttitudes (pitch, roll, yaw)
+    //Hardcoded location in testCoordinates
+    var test = false
+    var testAttitudes = [(0.0, 0, 0.0), (0.0, 0.1, 0.0), (0.0, 0.2, 0.0), (0.0, 0.3, 0.0), (0.0, 0.4, 0.0), (0.0, 0.5, 0.0), (0.0, 0.6, 0.0), (0.0, 0.7, 0.0), (0.0, 0.8, 0.0), (0.0, 0.9, 0.0), (0.0, 1.0, 0.0), (0.0, 0.9, 0.0), (0.0, 0.8, 0.0), (0.0, 0.7, 0.0), (0.0, 0.6, 0.0), (0.0, 0.5, 0.0), (0.0, 0.4, 0.0), (0.0, 0.3, 0.0), (0.0, 0.2, 0.0), (0.0, 0.1, 0.0), (0.0, 0.0, 0.0), (0.1, 0.0, 0.0), (0.2, 0.0, 0.0), (0.3, 0.0, 0.0), (0.4, 0.0, 0.0), (0.5, 0.0, 0.0), (0.6, 0.0, 0.0), (0.7, 0.0, 0.0), (0.8, 0.0, 0.0), (0.9, 0.0, 0.0), (1.0, 0.0, 0.0), (1.1, 0.0, 0.0), (1.2, 0.0, 0.0), (1.3, 0.0, 0.0), (1.4, 0.0, 0.0), (1.5, 0.0, 0.0)]
+    var testCoordinates = (4446080.0, -9315645.0)
     
     let latMultiplier: Double = 100000
     let lonMultiplier: Double = 100000
@@ -24,13 +27,7 @@ class DevicePosition {
     var roll: Float = 0.0
     var yaw: Float = 0.0
     var hasPosition = false
-    
-    //True - location of phone permanently (0,0,0)
-    //False - use actual phone data
-    var staticLocation = false
-    
-    var pi = M_PI
-    
+    var updateCounter = 0
 
     func getValues() -> (latitude: Double, longitude: Double, altitude: Float, pitch: Float, roll: Float, yaw: Float) {
         return (latitude, longitude, altitude, pitch, roll, yaw)
@@ -46,39 +43,33 @@ class DevicePosition {
             String(format: "%f",yaw))
     }
     
-    func getStaticLocation() -> (Bool) {
-        return staticLocation
-    }
-    
     func setLocation(location: CLLocation?) {
-        if (location != nil) {
-            if staticLocation {
-                self.setLatitude(0)
-                self.setLongitude(0)
-                self.setAltitude(0)
-            } else {
-                self.setLatitude(Double(location!.coordinate.latitude * latMultiplier ))
-                self.setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
-                self.setAltitude(Float(location!.altitude))
-            }
+        if (test) {
+            setLatitude(testCoordinates.0)
+            setLongitude(testCoordinates.1)
+            setAltitude(285)
+            hasPosition = true
+        }else if (location != nil) {
+                setLatitude(Double(location!.coordinate.latitude * latMultiplier ))
+                setLongitude(Double(location!.coordinate.longitude * lonMultiplier))
+                setAltitude(Float(location!.altitude))
             self.hasPosition = true
         }
     }
     
-    func setPosition(latitude: Double, longitude: Double, altitude: Float)  {
-        setLatitude(latitude)
-        setLongitude(longitude)
-        setAltitude(altitude)
-        if !hasPosition {
-            setHasPosition(true)
-        }
-    }
-    
     func setAttitude(attitude: CMAttitude?) {
-        if (attitude != nil) {
-            self.setPitch(Float(attitude!.pitch))
-            self.setRoll(Float(attitude!.roll))
-            self.setYaw(Float(attitude!.yaw))
+        if (test) {
+            setPitch(testAttitudes[updateCounter].0)
+            setRoll(testAttitudes[updateCounter].1)
+            setYaw(testAttitudes[updateCounter].2)
+            updateCounter += 1
+            if (updateCounter == testAttitudes.count) {
+                updateCounter = 0
+            }
+        }else if (attitude != nil) {
+            setPitch(Float(attitude!.pitch))
+            setRoll(Float(attitude!.roll))
+            setYaw(Float(attitude!.yaw) + 3.14159/2.0)
         }
     }
     
