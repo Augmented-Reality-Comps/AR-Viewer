@@ -13,9 +13,11 @@ class DevicePosition {
     //TEST CODE
     //Hardcoded attitude values in testAttitudes (pitch, roll, yaw)
     //Hardcoded location in testCoordinates
-    var test = false
-    var testAttitudes = [(0.0, 0, 0.0), (0.0, 0.1, 0.0), (0.0, 0.2, 0.0), (0.0, 0.3, 0.0), (0.0, 0.4, 0.0), (0.0, 0.5, 0.0), (0.0, 0.6, 0.0), (0.0, 0.7, 0.0), (0.0, 0.8, 0.0), (0.0, 0.9, 0.0), (0.0, 1.0, 0.0), (0.0, 0.9, 0.0), (0.0, 0.8, 0.0), (0.0, 0.7, 0.0), (0.0, 0.6, 0.0), (0.0, 0.5, 0.0), (0.0, 0.4, 0.0), (0.0, 0.3, 0.0), (0.0, 0.2, 0.0), (0.0, 0.1, 0.0), (0.0, 0.0, 0.0), (0.1, 0.0, 0.0), (0.2, 0.0, 0.0), (0.3, 0.0, 0.0), (0.4, 0.0, 0.0), (0.5, 0.0, 0.0), (0.6, 0.0, 0.0), (0.7, 0.0, 0.0), (0.8, 0.0, 0.0), (0.9, 0.0, 0.0), (1.0, 0.0, 0.0), (1.1, 0.0, 0.0), (1.2, 0.0, 0.0), (1.3, 0.0, 0.0), (1.4, 0.0, 0.0), (1.5, 0.0, 0.0)]
-    var testCoordinates = (4446080.0, -9315645.0)
+    var test = true
+    //var testAttitudes = [(0.0, 0, 0.0), (0.0, 0.1, 0.0), (0.0, 0.2, 0.0), (0.0, 0.3, 0.0), (0.0, 0.4, 0.0), (0.0, 0.5, 0.0), (0.0, 0.6, 0.0), (0.0, 0.7, 0.0), (0.0, 0.8, 0.0), (0.0, 0.9, 0.0), (0.0, 1.0, 0.0), (0.0, 0.9, 0.0), (0.0, 0.8, 0.0), (0.0, 0.7, 0.0), (0.0, 0.6, 0.0), (0.0, 0.5, 0.0), (0.0, 0.4, 0.0), (0.0, 0.3, 0.0), (0.0, 0.2, 0.0), (0.0, 0.1, 0.0), (0.0, 0.0, 0.0), (0.1, 0.0, 0.0), (0.2, 0.0, 0.0), (0.3, 0.0, 0.0), (0.4, 0.0, 0.0), (0.5, 0.0, 0.0), (0.6, 0.0, 0.0), (0.7, 0.0, 0.0), (0.8, 0.0, 0.0), (0.9, 0.0, 0.0), (1.0, 0.0, 0.0), (1.1, 0.0, 0.0), (1.2, 0.0, 0.0), (1.3, 0.0, 0.0), (1.4, 0.0, 0.0), (1.5, 0.0, 0.0)]
+    var testAttitudes = [(1.5, 0.0, 1.5), (1.5, 0.0, 0.0), (1.5, 0.0, -1.5), (1.5, 0.0, 3.1415)]
+    //var testCoordinates = [(4446080.0, -9315645.0)]
+    var testCoordinates = [(4446085.0, -9315645.0),(4446080.0, -9315640.0),(4446075.0, -9315645.0),(4446080.0, -9315650.0)]
     
     let latMultiplier: Double = 100000
     let lonMultiplier: Double = 100000
@@ -45,8 +47,8 @@ class DevicePosition {
     
     func setLocation(location: CLLocation?) {
         if (test) {
-            setLatitude(testCoordinates.0)
-            setLongitude(testCoordinates.1)
+            setLatitude(testCoordinates[updateCounter].0)
+            setLongitude(testCoordinates[updateCounter].1)
             setAltitude(285)
             hasPosition = true
         }else if (location != nil) {
@@ -67,9 +69,9 @@ class DevicePosition {
                 updateCounter = 0
             }
         }else if (attitude != nil) {
-            setPitch(Float(attitude!.pitch))
-            setRoll(Float(attitude!.roll))
-            setYaw(Float(attitude!.yaw) + 3.14159/2.0)
+            setPitch(Float(round(100*Float(attitude!.pitch))/100))
+            setRoll(Float(round(100*Float(attitude!.roll))/100))
+            setYaw(Float(round(100*Float(attitude!.yaw))/100 + 3.14159/2.0))
         }
     }
     
