@@ -184,6 +184,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate  {
     
     func updateAction(sender:UIButton!) {
         update()
+        if (devicePosition.updateCounter == devicePosition.testAttitudes.count-1) {
+            devicePosition.updateCounter = 0
+        }else{
+            devicePosition.updateCounter++
+        }
+
     }
     
     override func didReceiveMemoryWarning() {
